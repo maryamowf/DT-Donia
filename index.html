@@ -1,0 +1,4610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dounia Transcribe | دنيا ترانسكرايب</title>
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
+          rel="stylesheet">
+
+
+    <style>
+
+        /* =====================================================
+           ROOT
+        ===================================================== */
+
+        :root {
+
+            --olive: #4f6248;
+            --olive-dark: #263a2b;
+            --olive-soft: #71846a;
+
+            --cream: #f8f2e8;
+            --cream-dark: #eee5d7;
+
+            --pink: #c9788b;
+            --pink-dark: #a9576d;
+            --pink-light: #e7b3bd;
+
+            --white: #ffffff;
+
+            --text: #283028;
+            --muted: #70756d;
+
+            --whatsapp: #25D366;
+
+            --shadow:
+                0 15px 45px rgba(38, 58, 43, 0.10);
+
+            --shadow-hover:
+                0 25px 60px rgba(38, 58, 43, 0.18);
+
+            --radius: 24px;
+
+            --transition:
+                all 0.35s cubic-bezier(.2,.8,.2,1);
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Cairo", sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+
+        /* =====================================================
+           INTRO / SPLASH SCREEN
+        ===================================================== */
+
+        .intro-screen {
+
+            position: fixed;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(201,120,139,.22),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(113,132,106,.25),
+                    transparent 35%
+                ),
+                var(--cream);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            z-index: 99999;
+
+            transition:
+                opacity .8s ease,
+                visibility .8s ease;
+        }
+
+        .intro-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .intro-content {
+            text-align: center;
+            padding: 30px;
+            animation: introUp 1s ease forwards;
+        }
+
+        @keyframes introUp {
+
+            from {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* cute animated girl */
+
+        .anime-girl {
+
+            width: 150px;
+            height: 150px;
+
+            margin: 0 auto 25px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #e8b7a9,
+                    #f7d4c6
+                );
+
+            border: 7px solid white;
+
+            box-shadow:
+                0 20px 50px rgba(0,0,0,.12);
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 5rem;
+
+            animation:
+                girlFloat 2.8s ease-in-out infinite;
+        }
+
+        @keyframes girlFloat {
+
+            0%,100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(2deg);
+            }
+        }
+
+
+        .wave-hand {
+
+            position: absolute;
+
+            right: -18px;
+            top: 5px;
+
+            font-size: 3rem;
+
+            animation:
+                wave 1s infinite alternate ease-in-out;
+        }
+
+        @keyframes wave {
+
+            from {
+                transform: rotate(-20deg);
+            }
+
+            to {
+                transform: rotate(20deg);
+            }
+        }
+
+
+        .intro-content h1 {
+
+            color: var(--olive-dark);
+
+            font-size: clamp(
+                2rem,
+                6vw,
+                3.8rem
+            );
+
+            font-weight: 800;
+
+            margin-bottom: 8px;
+        }
+
+        .intro-content h1 span {
+            color: var(--pink-dark);
+        }
+
+        .intro-content p {
+
+            color: var(--muted);
+
+            font-size: 1rem;
+
+            margin-bottom: 25px;
+        }
+
+
+        .intro-loading {
+
+            width: 180px;
+            height: 5px;
+
+            background: rgba(79,98,72,.12);
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            margin: auto;
+        }
+
+        .intro-loading span {
+
+            display: block;
+
+            height: 100%;
+
+            width: 0;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--olive),
+                    var(--pink)
+                );
+
+            animation:
+                loading 1.8s ease forwards;
+        }
+
+        @keyframes loading {
+            to {
+                width: 100%;
+            }
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        header {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            width: 100%;
+
+            z-index: 5000;
+
+            background:
+                rgba(248,242,232,.90);
+
+            backdrop-filter:
+                blur(16px);
+
+            border-bottom:
+                1px solid rgba(79,98,72,.08);
+
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+
+            box-shadow:
+                0 10px 35px rgba(38,58,43,.10);
+        }
+
+
+        .navbar {
+
+            max-width: 1250px;
+
+            margin: auto;
+
+            padding:
+                12px 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+
+        /* LOGO */
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .logo-icon {
+
+            width: 48px;
+            height: 48px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--olive-dark),
+                    var(--olive)
+                );
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 800;
+
+            font-size: 1.1rem;
+
+            border:
+                2px solid var(--pink-light);
+
+            box-shadow:
+                0 7px 20px rgba(79,98,72,.2);
+        }
+
+
+        .logo-text h2 {
+
+            font-size: 1rem;
+
+            color: var(--olive-dark);
+
+            font-weight: 800;
+
+            line-height: 1.2;
+        }
+
+        .logo-text span {
+
+            font-size: .65rem;
+
+            color: var(--olive-soft);
+
+            letter-spacing: 1px;
+        }
+
+
+        /* NAV */
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+
+            list-style: none;
+        }
+
+        .nav-links a {
+
+            position: relative;
+
+            color: var(--text);
+
+            font-size: .9rem;
+
+            font-weight: 600;
+
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+
+            color: var(--pink-dark);
+        }
+
+        .nav-links a::after {
+
+            content: "";
+
+            position: absolute;
+
+            bottom: -6px;
+            right: 0;
+
+            width: 0;
+            height: 2px;
+
+            background: var(--pink);
+
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+
+        /* MENU BUTTON */
+
+        .menu-toggle {
+
+            display: none;
+
+            width: 44px;
+            height: 44px;
+
+            border: none;
+
+            background: white;
+
+            color: var(--olive-dark);
+
+            border-radius: 12px;
+
+            font-size: 1.2rem;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.07);
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            border: none;
+
+            cursor: pointer;
+
+            border-radius: 50px;
+
+            padding:
+                12px 23px;
+
+            font-size: .9rem;
+
+            font-weight: 700;
+
+            transition: var(--transition);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .btn-primary {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--olive),
+                    var(--olive-dark)
+                );
+
+            box-shadow:
+                0 10px 25px rgba(79,98,72,.22);
+        }
+
+        .btn-primary:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 15px 35px rgba(79,98,72,.32);
+        }
+
+
+        .btn-pink {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--pink),
+                    var(--pink-dark)
+                );
+
+            box-shadow:
+                0 10px 25px rgba(201,120,139,.25);
+        }
+
+        .btn-pink:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 15px 35px rgba(201,120,139,.35);
+        }
+
+
+        .btn::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -100%;
+
+            width: 70%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,.35),
+                    transparent
+                );
+
+            transform: skewX(-20deg);
+
+            transition: .6s;
+        }
+
+        .btn:hover::after {
+            left: 130%;
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+
+            min-height: 100vh;
+
+            max-width: 1250px;
+
+            margin: auto;
+
+            padding:
+                145px 25px 80px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 70px;
+
+            align-items: center;
+        }
+
+
+        .hero-content {
+
+            animation:
+                heroText .9s ease both;
+        }
+
+        @keyframes heroText {
+
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: var(--pink-dark);
+
+            background:
+                rgba(201,120,139,.10);
+
+            border:
+                1px solid rgba(201,120,139,.18);
+
+            padding:
+                7px 14px;
+
+            border-radius: 30px;
+
+            font-size: .8rem;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+
+        .hero h1 {
+
+            color: var(--olive-dark);
+
+            font-size:
+                clamp(2.4rem, 5vw, 4.5rem);
+
+            line-height: 1.2;
+
+            font-weight: 800;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: var(--pink-dark);
+        }
+
+
+        .hero-subtitle {
+
+            font-size: 1.1rem;
+
+            color: var(--olive);
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+        }
+
+
+        .hero-description {
+
+            color: var(--muted);
+
+            max-width: 560px;
+
+            font-size: 1rem;
+
+            margin-bottom: 28px;
+        }
+
+
+        .hero-buttons {
+
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 28px;
+        }
+
+
+        /* HERO BADGES */
+
+        .hero-badges {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+        }
+
+        .hero-badge {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                7px 12px;
+
+            border-radius: 30px;
+
+            background: white;
+
+            border:
+                1px solid rgba(79,98,72,.10);
+
+            color: var(--olive-dark);
+
+            font-size: .75rem;
+
+            font-weight: 600;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,.04);
+        }
+
+        .hero-badge i {
+            color: var(--pink);
+        }
+
+
+        /* HERO IMAGE */
+
+        .hero-image-area {
+
+            position: relative;
+
+            display: flex;
+
+            justify-content: center;
+
+            animation:
+                heroImage 1s ease .15s both;
+        }
+
+        @keyframes heroImage {
+
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+
+        .hero-image-card {
+
+            position: relative;
+
+            width: min(100%, 520px);
+
+            padding: 10px;
+
+            background: white;
+
+            border-radius:
+                30px;
+
+            box-shadow:
+                0 25px 70px rgba(38,58,43,.18);
+
+            transform:
+                rotate(1deg);
+
+            transition: var(--transition);
+        }
+
+        .hero-image-card:hover {
+
+            transform:
+                rotate(0deg)
+                translateY(-8px);
+        }
+
+
+        .hero-image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+        .floating-note {
+
+            position: absolute;
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 12px 15px;
+
+            box-shadow:
+                0 15px 35px rgba(0,0,0,.12);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            font-size: .75rem;
+
+            font-weight: 700;
+
+            color: var(--olive-dark);
+
+            animation:
+                floatNote 4s ease-in-out infinite;
+        }
+
+        .floating-note i {
+
+            width: 34px;
+            height: 34px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+            background: var(--pink);
+        }
+
+        .note-one {
+            right: -30px;
+            top: 12%;
+        }
+
+        .note-two {
+            left: -30px;
+            bottom: 12%;
+            animation-delay: 1s;
+        }
+
+        @keyframes floatNote {
+
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+
+        /* =====================================================
+           SECTION COMMON
+        ===================================================== */
+
+        .section {
+
+            max-width: 1250px;
+
+            margin:
+                0 auto;
+
+            padding:
+                90px 25px;
+        }
+
+
+        .section-heading {
+
+            text-align: center;
+
+            max-width: 700px;
+
+            margin:
+                0 auto 50px;
+        }
+
+
+        .section-tag {
+
+            display: inline-block;
+
+            color: var(--pink-dark);
+
+            font-size: .8rem;
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+        }
+
+
+        .section-heading h2 {
+
+            color: var(--olive-dark);
+
+            font-size:
+                clamp(1.9rem, 4vw, 3rem);
+
+            line-height: 1.25;
+
+            margin-bottom: 12px;
+        }
+
+        .section-heading h2 span {
+            color: var(--pink-dark);
+        }
+
+
+        .section-heading p {
+
+            color: var(--muted);
+
+            font-size: .95rem;
+        }
+
+
+        /* =====================================================
+           TRUST BAR
+        ===================================================== */
+
+        .trust-section {
+
+            background: white;
+
+            border-top:
+                1px solid rgba(79,98,72,.05);
+
+            border-bottom:
+                1px solid rgba(79,98,72,.05);
+        }
+
+        .trust-grid {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding:
+                28px 25px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 15px;
+        }
+
+
+        .trust-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 15px;
+
+            border-radius: 18px;
+
+            transition: var(--transition);
+        }
+
+        .trust-item:hover {
+
+            background: var(--cream);
+
+            transform:
+                translateY(-3px);
+        }
+
+
+        .trust-icon {
+
+            width: 48px;
+            height: 48px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--olive),
+                    var(--olive-dark)
+                );
+        }
+
+        .trust-text h4 {
+
+            font-size: .9rem;
+
+            color: var(--olive-dark);
+        }
+
+        .trust-text p {
+
+            color: var(--muted);
+
+            font-size: .7rem;
+        }
+
+
+        /* =====================================================
+           SERVICES
+        ===================================================== */
+
+        .services-section {
+
+            background:
+                linear-gradient(
+                    180deg,
+                    var(--cream),
+                    #fbf8f2
+                );
+        }
+
+
+        .services-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 20px;
+        }
+
+
+        .service-card {
+
+            background: white;
+
+            border-radius:
+                var(--radius);
+
+            padding:
+                25px 20px 20px;
+
+            border:
+                1px solid rgba(79,98,72,.07);
+
+            box-shadow:
+                var(--shadow);
+
+            position: relative;
+
+            overflow: hidden;
+
+            cursor: pointer;
+
+            transition:
+                transform .4s ease,
+                box-shadow .4s ease,
+                border .4s ease;
+
+            opacity: 0;
+
+            transform:
+                translateY(30px);
+        }
+
+        .service-card.show {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+        }
+
+
+        .service-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            right: 0;
+
+            width: 100%;
+            height: 4px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--olive),
+                    var(--pink)
+                );
+
+            transform:
+                scaleX(0);
+
+            transform-origin: right;
+
+            transition: .4s;
+        }
+
+
+        .service-card:hover {
+
+            transform:
+                translateY(-10px) !important;
+
+            box-shadow:
+                var(--shadow-hover);
+
+            border-color:
+                rgba(201,120,139,.22);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+
+        .service-number {
+
+            position: absolute;
+
+            top: 13px;
+            left: 15px;
+
+            font-size: .7rem;
+
+            font-weight: 800;
+
+            color:
+                rgba(79,98,72,.22);
+        }
+
+
+        .service-icon {
+
+            width: 66px;
+            height: 66px;
+
+            border-radius: 20px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 18px;
+
+            background:
+                var(--cream);
+
+            color:
+                var(--olive);
+
+            font-size: 1.6rem;
+
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-icon {
+
+            background:
+                var(--olive);
+
+            color: white;
+
+            transform:
+                rotate(-5deg)
+                scale(1.08);
+        }
+
+
+        .service-card h3 {
+
+            color: var(--olive-dark);
+
+            font-size: 1rem;
+
+            margin-bottom: 4px;
+        }
+
+
+        .service-arabic {
+
+            color: var(--pink-dark);
+
+            font-size: .8rem;
+
+            font-weight: 800;
+
+            display: block;
+
+            margin-bottom: 10px;
+        }
+
+
+        .service-card p {
+
+            color: var(--muted);
+
+            font-size: .78rem;
+
+            line-height: 1.8;
+
+            margin-bottom: 17px;
+        }
+
+
+        .service-bottom {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 8px;
+        }
+
+
+        .details-link {
+
+            color: var(--olive);
+
+            font-size: .75rem;
+
+            font-weight: 800;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            transition: var(--transition);
+        }
+
+        .service-card:hover .details-link {
+
+            color: var(--pink-dark);
+
+            gap: 9px;
+        }
+
+
+        .quick-whatsapp {
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                rgba(37,211,102,.10);
+
+            color:
+                var(--whatsapp);
+
+            border: none;
+
+            cursor: pointer;
+
+            transition: var(--transition);
+        }
+
+        .quick-whatsapp:hover {
+
+            color: white;
+
+            background:
+                var(--whatsapp);
+
+            transform:
+                scale(1.1)
+                rotate(8deg);
+        }
+
+
+        /* =====================================================
+           HOW IT WORKS
+        ===================================================== */
+
+        .steps-section {
+
+            background: white;
+        }
+
+        .steps-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 25px;
+
+            max-width: 1000px;
+
+            margin: auto;
+        }
+
+
+        .step {
+
+            text-align: center;
+
+            padding: 30px 20px;
+
+            border-radius: 22px;
+
+            background:
+                var(--cream);
+
+            transition: var(--transition);
+
+            position: relative;
+        }
+
+        .step:hover {
+
+            transform:
+                translateY(-7px);
+
+            box-shadow:
+                var(--shadow);
+        }
+
+
+        .step-icon {
+
+            width: 75px;
+            height: 75px;
+
+            margin:
+                0 auto 18px;
+
+            border-radius: 50%;
+
+            background:
+                white;
+
+            color:
+                var(--olive);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.8rem;
+
+            box-shadow:
+                0 10px 25px rgba(0,0,0,.06);
+        }
+
+
+        .step h3 {
+
+            color:
+                var(--olive-dark);
+
+            font-size: 1rem;
+
+            margin-bottom: 8px;
+        }
+
+        .step p {
+
+            color:
+                var(--muted);
+
+            font-size: .78rem;
+        }
+
+
+        /* =====================================================
+           SPECIAL CTA
+        ===================================================== */
+
+        .cta-section {
+
+            max-width: 1200px;
+
+            margin:
+                80px auto;
+
+            padding:
+                0 25px;
+        }
+
+
+        .cta-box {
+
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius:
+                30px;
+
+            padding:
+                55px 45px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--olive-dark),
+                    var(--olive)
+                );
+
+            box-shadow:
+                0 25px 60px rgba(38,58,43,.25);
+
+            text-align: center;
+        }
+
+
+        .cta-box::before {
+
+            content: "♡";
+
+            position: absolute;
+
+            font-size: 14rem;
+
+            left: -40px;
+            bottom: -100px;
+
+            color:
+                rgba(255,255,255,.05);
+
+            transform:
+                rotate(-15deg);
+        }
+
+        .cta-box::after {
+
+            content: "✦";
+
+            position: absolute;
+
+            font-size: 10rem;
+
+            right: -20px;
+            top: -70px;
+
+            color:
+                rgba(231,179,189,.10);
+        }
+
+
+        .cta-box h2 {
+
+            font-size:
+                clamp(1.7rem,4vw,2.7rem);
+
+            margin-bottom: 12px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-box p {
+
+            max-width: 650px;
+
+            margin:
+                0 auto 25px;
+
+            color:
+                rgba(255,255,255,.78);
+
+            font-size: .9rem;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-box .btn {
+
+            background: white;
+
+            color:
+                var(--olive-dark);
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .cta-box .btn:hover {
+
+            color:
+                var(--pink-dark);
+        }
+
+
+        /* =====================================================
+           NOTES
+        ===================================================== */
+
+        .notes-section {
+
+            background:
+                var(--cream);
+        }
+
+
+        .notes-box {
+
+            display: grid;
+
+            grid-template-columns:
+                1.1fr .9fr;
+
+            gap: 50px;
+
+            align-items: center;
+        }
+
+
+        .notes-content h2 {
+
+            color:
+                var(--olive-dark);
+
+            font-size:
+                clamp(1.8rem,4vw,2.7rem);
+
+            line-height: 1.3;
+
+            margin-bottom: 15px;
+        }
+
+
+        .notes-content > p {
+
+            color:
+                var(--muted);
+
+            font-size: .9rem;
+
+            margin-bottom: 20px;
+        }
+
+
+        .notes-list {
+
+            list-style: none;
+
+            display: grid;
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .notes-list li {
+
+            display: flex;
+
+            gap: 10px;
+
+            align-items: flex-start;
+
+            color:
+                var(--text);
+
+            font-size: .82rem;
+        }
+
+        .notes-list i {
+
+            color:
+                var(--pink-dark);
+
+            margin-top: 5px;
+        }
+
+
+        .notes-card {
+
+            background: white;
+
+            border-radius:
+                28px;
+
+            padding: 40px 25px;
+
+            text-align: center;
+
+            box-shadow:
+                var(--shadow);
+
+            transform:
+                rotate(-2deg);
+
+            transition: var(--transition);
+        }
+
+        .notes-card:hover {
+
+            transform:
+                rotate(0deg)
+                translateY(-8px);
+        }
+
+
+        .notes-card-icon {
+
+            width: 90px;
+            height: 90px;
+
+            border-radius: 25px;
+
+            margin:
+                0 auto 18px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 2.5rem;
+
+            color:
+                var(--olive);
+
+            background:
+                var(--cream);
+        }
+
+        .notes-card h3 {
+
+            color:
+                var(--olive-dark);
+
+            margin-bottom: 10px;
+        }
+
+        .notes-card p {
+
+            color:
+                var(--muted);
+
+            font-size: .8rem;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(25,35,28,.62);
+
+            backdrop-filter:
+                blur(8px);
+
+            z-index: 10000;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition:
+                opacity .3s ease,
+                visibility .3s ease;
+        }
+
+        .modal.active {
+
+            opacity: 1;
+
+            visibility: visible;
+        }
+
+
+        .modal-box {
+
+            background:
+                var(--cream);
+
+            width:
+                min(600px,100%);
+
+            max-height:
+                90vh;
+
+            overflow-y: auto;
+
+            border-radius:
+                28px;
+
+            padding: 30px;
+
+            position: relative;
+
+            transform:
+                translateY(30px)
+                scale(.96);
+
+            transition:
+                .35s ease;
+        }
+
+        .modal.active .modal-box {
+
+            transform:
+                translateY(0)
+                scale(1);
+        }
+
+
+        .modal-close {
+
+            position: absolute;
+
+            top: 15px;
+            left: 15px;
+
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            background:
+                white;
+
+            color:
+                var(--olive-dark);
+
+            cursor: pointer;
+
+            font-size: 1rem;
+
+            box-shadow:
+                0 5px 15px rgba(0,0,0,.08);
+
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+
+            background:
+                var(--pink);
+
+            color: white;
+
+            transform:
+                rotate(90deg);
+        }
+
+
+        .modal-icon {
+
+            width: 70px;
+            height: 70px;
+
+            border-radius: 20px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                white;
+
+            color:
+                var(--olive);
+
+            font-size: 1.8rem;
+
+            margin-bottom: 15px;
+        }
+
+
+        .modal-box h2 {
+
+            color:
+                var(--olive-dark);
+
+            font-size: 1.6rem;
+
+            margin-bottom: 5px;
+        }
+
+
+        .modal-arabic {
+
+            color:
+                var(--pink-dark);
+
+            font-weight: 800;
+
+            font-size: .9rem;
+
+            margin-bottom: 15px;
+
+            display: block;
+        }
+
+
+        .modal-description {
+
+            color:
+                var(--muted);
+
+            font-size: .9rem;
+
+            margin-bottom: 20px;
+        }
+
+
+        .modal-features {
+
+            background:
+                white;
+
+            border-radius:
+                18px;
+
+            padding: 18px;
+
+            margin-bottom: 22px;
+        }
+
+        .modal-features h4 {
+
+            color:
+                var(--olive-dark);
+
+            margin-bottom: 10px;
+
+            font-size: .9rem;
+        }
+
+
+        .modal-features ul {
+
+            list-style: none;
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .modal-features li {
+
+            color:
+                var(--text);
+
+            font-size: .78rem;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 8px;
+        }
+
+        .modal-features li i {
+
+            color:
+                var(--pink-dark);
+
+            margin-top: 4px;
+        }
+
+
+        .modal-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        .modal-actions .btn {
+
+            flex: 1;
+
+            min-width: 180px;
+        }
+
+
+        /* =====================================================
+           WHATSAPP FLOAT
+        ===================================================== */
+
+        .whatsapp-float {
+
+            position: fixed;
+
+            left: 22px;
+            bottom: 22px;
+
+            width: 62px;
+            height: 62px;
+
+            border-radius: 50%;
+
+            background:
+                var(--whatsapp);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.8rem;
+
+            z-index: 4500;
+
+            box-shadow:
+                0 12px 30px rgba(37,211,102,.35);
+
+            animation:
+                whatsappPulse 2.5s infinite;
+        }
+
+        @keyframes whatsappPulse {
+
+            0%,100% {
+                box-shadow:
+                    0 12px 30px rgba(37,211,102,.35);
+            }
+
+            50% {
+                box-shadow:
+                    0 12px 30px rgba(37,211,102,.35),
+                    0 0 0 10px rgba(37,211,102,.08);
+            }
+        }
+
+        .whatsapp-float:hover {
+
+            transform:
+                scale(1.1)
+                rotate(8deg);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            background:
+                var(--olive-dark);
+
+            color: white;
+
+            padding:
+                60px 25px 25px;
+        }
+
+
+        .footer-content {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr 1fr;
+
+            gap: 35px;
+        }
+
+
+        .footer-brand h2 {
+
+            font-size: 1.3rem;
+
+            margin-bottom: 8px;
+        }
+
+        .footer-brand h2 span {
+            color: var(--pink-light);
+        }
+
+        .footer-brand p {
+
+            color:
+                rgba(255,255,255,.65);
+
+            font-size: .8rem;
+
+            max-width: 350px;
+        }
+
+
+        .footer-column h3 {
+
+            font-size: .95rem;
+
+            margin-bottom: 15px;
+
+            color:
+                var(--pink-light);
+        }
+
+        .footer-column ul {
+
+            list-style: none;
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .footer-column li {
+
+            color:
+                rgba(255,255,255,.65);
+
+            font-size: .78rem;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+
+        .footer-contact {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+        .footer-contact a {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            color:
+                rgba(255,255,255,.75);
+
+            font-size: .8rem;
+        }
+
+
+        .copyright {
+
+            max-width: 1200px;
+
+            margin:
+                40px auto 0;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid rgba(255,255,255,.1);
+
+            text-align: center;
+
+            color:
+                rgba(255,255,255,.45);
+
+            font-size: .7rem;
+        }
+
+
+        /* =====================================================
+           SCROLL REVEAL
+        ===================================================== */
+
+        .reveal {
+
+            opacity: 0;
+
+            transform:
+                translateY(35px);
+
+            transition:
+                opacity .8s ease,
+                transform .8s ease;
+        }
+
+        .reveal.visible {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .services-grid {
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+            .hero {
+                gap: 40px;
+            }
+
+            .trust-grid {
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            /* HEADER — links stay visible on mobile */
+
+            .navbar {
+                padding: 8px 12px 7px;
+                flex-wrap: wrap;
+                gap: 7px 10px;
+            }
+
+            .logo-text span {
+                display: none;
+            }
+
+            .navbar > .btn {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .nav-links {
+                position: static;
+                order: 3;
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 6px;
+                padding: 3px 1px 4px;
+                margin: 0;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scrollbar-width: none;
+                background: transparent;
+                border-radius: 0;
+                box-shadow: none;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-links li {
+                flex: 0 0 auto;
+            }
+
+            .nav-links a {
+                display: block;
+                width: auto;
+                white-space: nowrap;
+                padding: 7px 11px;
+                border-radius: 999px;
+                background: rgba(255,255,255,.72);
+                border: 1px solid rgba(79,98,72,.08);
+                font-size: .68rem;
+            }
+
+            .nav-links a:hover,
+            .nav-links a:active {
+                background: var(--cream-dark);
+            }
+
+            /* HERO */
+
+            .hero {
+
+                grid-template-columns:
+                    1fr;
+
+                text-align: center;
+
+                padding:
+                    125px 18px 55px;
+
+                min-height: auto;
+
+                gap: 45px;
+            }
+
+            .hero-description {
+                margin:
+                    0 auto 25px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-badges {
+                justify-content: center;
+            }
+
+            .hero-image-area {
+                width: 100%;
+                padding: 0 8px;
+            }
+
+            .hero-image-card {
+                width: min(100%,430px);
+            }
+
+            /* Keep both desktop floating notes visible on phones */
+            .floating-note {
+                display: flex;
+                padding: 8px 10px;
+                border-radius: 13px;
+                gap: 6px;
+                font-size: .62rem;
+                white-space: nowrap;
+                z-index: 4;
+            }
+
+            .floating-note i {
+                width: 28px;
+                height: 28px;
+                flex-shrink: 0;
+                font-size: .7rem;
+            }
+
+            .note-one {
+                right: -2px;
+                top: 8%;
+            }
+
+            .note-two {
+                left: -2px;
+                bottom: 8%;
+            }
+
+
+            /* TRUST */
+
+            .trust-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                padding:
+                    20px 15px;
+
+                gap: 8px;
+            }
+
+            .trust-item {
+                padding: 12px 8px;
+            }
+
+            .trust-icon {
+
+                width: 40px;
+                height: 40px;
+
+                font-size: .9rem;
+            }
+
+            .trust-text h4 {
+                font-size: .75rem;
+            }
+
+            .trust-text p {
+                font-size: .62rem;
+            }
+
+
+            /* SERVICES */
+
+            .section {
+                padding:
+                    65px 16px;
+            }
+
+            .services-grid {
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 12px;
+            }
+
+            .service-card {
+
+                padding:
+                    20px 14px 15px;
+
+                border-radius:
+                    19px;
+            }
+
+            .service-icon {
+
+                width: 55px;
+                height: 55px;
+
+                border-radius: 17px;
+
+                font-size: 1.3rem;
+
+                margin-bottom: 13px;
+            }
+
+            .service-card h3 {
+                font-size: .82rem;
+            }
+
+            .service-arabic {
+                font-size: .7rem;
+            }
+
+            .service-card p {
+
+                font-size: .68rem;
+
+                line-height: 1.7;
+
+                margin-bottom: 12px;
+            }
+
+            .details-link {
+                font-size: .65rem;
+            }
+
+            .quick-whatsapp {
+
+                width: 33px;
+                height: 33px;
+
+                font-size: .8rem;
+            }
+
+
+            /* STEPS */
+
+            .steps-grid {
+                grid-template-columns:
+                    1fr;
+
+                gap: 12px;
+            }
+
+            .step {
+                padding:
+                    25px 18px;
+            }
+
+
+            /* NOTES */
+
+            .notes-box {
+
+                grid-template-columns:
+                    1fr;
+
+                gap: 30px;
+            }
+
+            .notes-card {
+                transform: none;
+            }
+
+
+            /* CTA */
+
+            .cta-section {
+                margin:
+                    55px auto;
+            }
+
+            .cta-box {
+
+                padding:
+                    45px 20px;
+
+                border-radius:
+                    24px;
+            }
+
+
+            /* FOOTER */
+
+            .footer-content {
+
+                grid-template-columns:
+                    1fr;
+
+                text-align: center;
+
+                gap: 28px;
+            }
+
+            .footer-brand p {
+                margin: auto;
+            }
+
+            .footer-contact {
+                align-items: center;
+            }
+
+
+            /* WHATSAPP */
+
+            .whatsapp-float {
+
+                width: 55px;
+                height: 55px;
+
+                left: 15px;
+                bottom: 15px;
+
+                font-size: 1.5rem;
+            }
+
+        }
+
+
+        @media (max-width: 430px) {
+
+            .logo-icon {
+
+                width: 42px;
+                height: 42px;
+
+                font-size: .95rem;
+            }
+
+            .logo-text h2 {
+                font-size: .85rem;
+            }
+
+
+            .logo-icon {
+                width: 42px;
+                height: 42px;
+                font-size: .95rem;
+            }
+
+            .nav-links a {
+                font-size: .64rem;
+                padding: 6px 9px;
+            }
+
+            .floating-note {
+                padding: 7px 8px;
+                font-size: .56rem;
+            }
+
+            .floating-note i {
+                width: 25px;
+                height: 25px;
+                font-size: .62rem;
+            }
+
+
+            .hero-subtitle {
+                font-size: .9rem;
+            }
+
+            .hero-description {
+                font-size: .82rem;
+            }
+
+
+            .hero-buttons {
+
+                flex-direction: column;
+
+                width: 100%;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+            }
+
+
+            .services-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 10px;
+            }
+
+
+            .service-card {
+
+                min-width: 0;
+            }
+
+
+            .section-heading {
+                margin-bottom: 32px;
+            }
+
+
+            .modal-box {
+                padding:
+                    25px 18px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .modal-actions .btn {
+                width: 100%;
+            }
+
+        }
+        .social-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin-top: 20px;
+    transform: translate(90px, -8px);
+}
+
+.social-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 19px;
+    color: var(--green);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(79, 98, 72, 0.2);
+    box-shadow: 0 5px 15px rgba(79, 98, 72, 0.12);
+    transition: all 0.35s ease;
+}
+
+/* ✨ Hover */
+.social-circle:hover {
+    transform: translateY(-7px) scale(1.15);
+    box-shadow:
+        0 0 10px rgba(255, 255, 255, 0.9),
+        0 0 22px rgba(190, 170, 120, 0.7),
+        0 12px 28px rgba(79, 98, 72, 0.25);
+    border-color: rgba(190, 170, 120, 0.7);
+    background: #fff;
+}
+
+/* لمعة بسيطة */
+.social-circle:hover i {
+    filter: drop-shadow(0 0 6px rgba(190, 170, 120, 0.9));
+}
+
+
+        /* =====================================================
+           REDUCE MOTION
+        ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration:
+                    .01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                scroll-behavior:
+                    auto !important;
+
+                transition-duration:
+                    .01ms !important;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     INTRO
+===================================================== -->
+
+<div class="intro-screen" id="intro">
+
+    <div class="intro-content">
+
+        <div class="anime-girl">
+
+            👩🏻
+
+            <div class="wave-hand">
+                👋
+            </div>
+
+        </div>
+
+        <h1>
+            Hi, I'm <span>Dounia</span> 💗
+        </h1>
+
+        <p>
+            أهلاً بيك/بيكي في Dounia Transcribe
+            <br>
+            Your Tasks... My Support ✨
+        </p>
+
+        <div class="intro-loading">
+            <span></span>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header id="header">
+
+    <nav class="navbar">
+
+        <a href="#home" class="logo">
+
+            <div class="logo-icon">
+                DT
+            </div>
+
+            <div class="logo-text">
+
+                <h2>
+                    Dounia Transcribe
+                </h2>
+
+                <span>
+                    ACCURACY • QUALITY • TRUST
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <ul class="nav-links" id="navLinks">
+
+            <li>
+                <a href="#home">
+                    الرئيسية
+                </a>
+            </li>
+
+            <li>
+                <a href="#services">
+                    خدماتنا
+                </a>
+            </li>
+
+            <li>
+                <a href="#how">
+                    إزاي بنشتغل؟
+                </a>
+            </li>
+
+            <li>
+                <a href="#notes">
+                    المذكرات
+                </a>
+            </li>
+
+            <li>
+                <a href="#contact">
+                    تواصل معنا
+                </a>
+            </li>
+
+        </ul>
+
+
+        <a
+            class="btn btn-primary"
+            href="https://wa.me/201022634494?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA"
+            target="_blank"
+        >
+
+            <i class="fab fa-whatsapp"></i>
+
+            اطلب الخدمة
+
+        </a>
+
+
+        <button
+            class="menu-toggle"
+            id="menuToggle"
+            aria-label="فتح القائمة"
+        >
+
+            <i class="fas fa-bars"></i>
+
+        </button>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<main>
+
+<section class="hero" id="home">
+
+
+    <div class="hero-content">
+
+        <span class="eyebrow">
+
+            <i class="fas fa-sparkles"></i>
+
+            خدمات احترافية بجودة عالية
+
+        </span>
+
+
+        <div class="hero-subtitle">
+            Your Tasks... My Support 💗
+        </div>
+
+
+        <h1>
+
+            خلّي شغلك
+            <span>
+                علينا
+            </span>
+
+            ✨
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            تفريغ صوتي، ترجمة، إعداد CV،
+            PowerPoint، Excel، مذكرات تعليمية
+            وخدمات رقمية ومكتبية...
+            كل ده في مكان واحد وبجودة تليق بيك.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="#services"
+                class="btn btn-primary"
+            >
+
+                اكتشف/ي خدماتنا
+
+                <i class="fas fa-arrow-left"></i>
+
+            </a>
+
+
+            <a
+                href="https://wa.me/201022634494?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%AF%D9%88%D9%86%D9%8A%D8%A7%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA"
+                target="_blank"
+                class="btn btn-pink"
+            >
+
+                <i class="fab fa-whatsapp"></i>
+
+                كلمينا واتساب
+
+            </a>
+
+        </div>
+       <div class="social-links">
+    <a href="https://www.instagram.com/donia_haredy?stkn=M3ZpenFzZmk5d21j" target="_blank" class="social-circle">
+        <i class="fab fa-instagram"></i>
+    </a>
+
+    <a href="https://www.facebook.com/profile.php?id=61577319514927" target="_blank" class="social-circle">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+</div>
+
+        <div class="hero-badges">
+
+            <div class="hero-badge">
+
+                <i class="fas fa-lock"></i>
+
+                سرية تامة
+
+            </div>
+
+            <div class="hero-badge">
+
+                <i class="fas fa-bolt"></i>
+
+                تسليم سريع
+
+            </div>
+
+            <div class="hero-badge">
+
+                <i class="fas fa-star"></i>
+
+                جودة عالية
+
+            </div>
+
+            <div class="hero-badge">
+
+                <i class="fas fa-heart"></i>
+
+                دعم مستمر
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- IMAGE -->
+
+    <div class="hero-image-area">
+
+        <div class="hero-image-card">
+
+            <!--
+                IMPORTANT:
+                Rename your uploaded image to:
+                dounia.jpg
+            -->
+
+            <img
+                src="Screenshot 2026-09-10 190406.png"
+                alt="Dounia Transcribe"
+            >
+
+        </div>
+
+
+        <div class="floating-note note-one">
+
+            <i class="fas fa-microphone"></i>
+
+            تفريغ صوتي
+
+        </div>
+
+
+        <div class="floating-note note-two">
+
+            <i class="fas fa-file-lines"></i>
+
+            شغل منظم ✨
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     TRUST
+===================================================== -->
+
+<section class="trust-section">
+
+    <div class="trust-grid">
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                <i class="fas fa-shield-halved"></i>
+            </div>
+
+            <div class="trust-text">
+
+                <h4>
+                    سرية تامة
+                </h4>
+
+                <p>
+                    لملفاتك ومعلوماتك
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+
+            <div class="trust-text">
+
+                <h4>
+                    التزام بالمواعيد
+                </h4>
+
+                <p>
+                    وقتك مهم عندنا
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                <i class="fas fa-medal"></i>
+            </div>
+
+            <div class="trust-text">
+
+                <h4>
+                    جودة عالية
+                </h4>
+
+                <p>
+                    مراجعة قبل التسليم
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                <i class="fas fa-headset"></i>
+            </div>
+
+            <div class="trust-text">
+
+                <h4>
+                    دعم مستمر
+                </h4>
+
+                <p>
+                    بنساعدك لحد ما تخلص
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SERVICES
+===================================================== -->
+
+<section
+    class="section services-section"
+    id="services"
+>
+
+
+    <div class="section-heading reveal">
+
+        <span class="section-tag">
+            ✦ SERVICES
+        </span>
+
+        <h2> اختار <span>الخدمة</span>اللي محتاجها 💗
+        </h2>
+
+        <p>
+            اضغط/ي على أي خدمة لمعرفة التفاصيل،
+            أو استخدم/ي زر الواتساب للتواصل مباشرة.
+        </p>
+
+    </div>
+
+
+
+    <div class="services-grid">
+
+
+        <!-- SERVICE 1 -->
+
+        <article
+            class="service-card"
+            data-service="تفريغ صوتي"
+            data-icon="fa-microphone"
+            data-description="تحويل التسجيلات الصوتية والفيديوهات إلى نصوص مكتوبة بدقة وتنظيم، بالعربي أو الإنجليزي."
+        >
+
+            <span class="service-number">
+                01
+            </span>
+
+            <div class="service-icon">
+
+                <i class="fas fa-microphone"></i>
+
+            </div>
+
+            <h3>
+                AUDIO TRANSCRIPTION
+            </h3>
+
+            <span class="service-arabic">
+                تفريغ صوتي
+            </span>
+
+            <p>
+                تحويل التسجيلات الصوتية والفيديوهات
+                إلى نص مكتوب بدقة عالية.
+            </p>
+
+            <div class="service-bottom">
+
+                <span class="details-link">
+                    التفاصيل
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+
+                <button
+                    class="quick-whatsapp"
+                    onclick="quickWhatsApp(event,'تفريغ صوتي')"
+                    aria-label="طلب تفريغ صوتي"
+                >
+
+                    <i class="fab fa-whatsapp"></i>
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 2 -->
+
+        <article
+            class="service-card"
+            data-service="ترجمة احترافية"
+            data-icon="fa-language"
+            data-description="ترجمة احترافية للنصوص والمستندات والأبحاث مع الحفاظ على المعنى والسياق."
+        >
+
+            <span class="service-number">
+                02
+            </span>
+
+            <div class="service-icon">
+
+                <i class="fas fa-language"></i>
+
+            </div>
+
+            <h3>
+                TRANSLATION
+            </h3>
+
+            <span class="service-arabic">
+                ترجمة احترافية
+            </span>
+
+            <p>
+                ترجمة دقيقة وواضحة للنصوص
+                والمستندات والأبحاث.
+            </p>
+
+            <div class="service-bottom">
+
+                <span class="details-link">
+                    التفاصيل
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+
+                <button
+                    class="quick-whatsapp"
+                    onclick="quickWhatsApp(event,'ترجمة احترافية')"
+                >
+
+                    <i class="fab fa-whatsapp"></i>
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 3 -->
+
+        <article
+            class="service-card"
+            data-service="إعداد الأبحاث والمذكرات"
+            data-icon="fa-file-lines"
+            data-description="تنسيق وترتيب الأبحاث والمذكرات وتحويل المحتوى الخام إلى ملف منظم وسهل القراءة."
+        >
+
+            <span class="service-number">
+                03
+            </span>
+
+            <div class="service-icon">
+
+                <i class="fas fa-file-lines"></i>
+
+            </div>
+
+            <h3>
+                RESEARCH & ACADEMIC
+            </h3>
+
+            <span class="service-arabic">
+                أبحاث ومذكرات
+            </span>
+
+            <p>
+                إعداد وتنسيق الأبحاث والمذكرات
+                بشكل احترافي ومنظم.
+            </p>
+
+            <div class="service-bottom">
+
+                <span class="details-link">
+                    التفاصيل
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+
+                <button
+                    class="quick-whatsapp"
+                    onclick="quickWhatsApp(event,'إعداد الأبحاث والمذكرات')"
+                >
+
+                    <i class="fab fa-whatsapp"></i>
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 4 -->
+
+        <article
+            class="service-card"
+            data-service="ترجمة الكتب"
+            data-icon="fa-book-open"
+            data-description="ترجمة الكتب والمحتوى الطويل بأسلوب واضح وسلس مع الحفاظ على مضمون الكتاب."
+        >
+
+            <span class="service-number">
+                04
+            </span>
+
+            <div class="service-icon">
+
+                <i class="fas fa-book-open"></i>
+
+            </div>
+
+            <h3>
+                BOOK TRANSLATION
+            </h3>
+
+            <span class="service-arabic">
+                ترجمة الكتب
+            </span>
+
+            <p>
+                ترجمة الكتب والمحتوى الطويل
+                بدقة وسلاسة.
+            </p>
+
+            <div class="service-bottom">
+
+                <span class="details-link">
+                    التفاصيل
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+
+                <button
+                    class="quick-whatsapp"
+                    onclick="quickWhatsApp(event,'ترجمة الكتب')"
+                >
+
+                    <i class="fab fa-whatsapp"></i>
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 5 -->
+
+        <article
+            class="service-card"
+            data-service="خدمات Excel"
+            data-icon="fa-file-excel"
+            data-description="تنظيم البيانات، تنسيق الجداول، المعادلات، إدخال البيانات والمراجعة."
+        >
+
+            <span class="service-number">
+                05
+            </span>
+
+            <div class="service-icon">
+
+                <i class="fas fa-file-excel"></i>
+
+            </div>
+
+            <h3>
+                EXCEL SERVICES
+            </h3>
+
+            <span class="service-arabic">
+                أعمال Excel
+            </span>
+
+            <p>
+                تنظيم البيانات، تنسيق الشيتات،
+                المعادلات وإدخال البيانات.
+            </p>
+
+            <div class="service-bottom">
+
+                <span class="details-link">
+                    التفاصيل
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+
+                <button
+                    class="quick-whatsapp"
+                    onclick="quickWhatsApp(event,'خدمات Excel')"
+                >
+
+                    <i class="fab fa-whatsapp"></i>
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 6 -->
+
+        <article
+            class="service-card"
+            data-service="CV احترافي ATS"
+            data-icon="fa-id-card"
+            data-description="كتابة وتصميم CV احترافي مناسب لأنظمة ATS ويساعدك على عرض خبراتك ومهاراتك بشكل أفضل."
+        >
+
+            <span class="service-number">
+                06
+            </span>
+
+            <div class="service-icon">
+
+                <i class="fas fa-id-card"></i>
+
+            </div>
+
+            <h3>
+                ATS CV
+            </h3>
+
+            <span class="service-arabic">
+                سيرة ذاتية احترافية
+            </span>
+
+            <p>
+                CV احترافي متوافق مع ATS
+                ويبرز مهاراتك وخبراتك.
+            </p>
+
+            <div class="service-bottom">
+
+                <span class="details-link">
+                    التفاصيل
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+
+                <button
+                    class="quick-whatsapp"
+                    onclick="quickWhatsApp(event,'CV احترافي ATS')"
+                >
+
+                    <i class="fab fa-whatsapp"></i>
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 7 -->
+
+        <article
+            class="service-card"
+            data-service="PowerPoint"
+            data-icon="fa-file-powerpoint"
+            data-description="تصميم عروض PowerPoint مرتبة وجذابة تساعدك على عرض أفكارك بطريقة واضحة ومميزة."
+        >
+
+            <span class="service-number">
+                07
+            </span>
+
+            <div class="service-icon">
+
+                <i class="fas fa-file-powerpoint"></i>
+
+            </div>
+
+            <h3>
+                POWERPOINT
+            </h3>
+
+            <span class="service-arabic">
+                عروض تقديمية
+            </span>
+
+            <p>
+                تصميم عروض تقديمية منظمة
+                وجذابة للشرح والتقديم.
+            </p>
+
+            <div class="service-bottom">
+
+                <span class="details-link">
+                    التفاصيل
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+
+                <button
+                    class="quick-whatsapp"
+                    onclick="quickWhatsApp(event,'PowerPoint')"
+                >
+
+                    <i class="fab fa-whatsapp"></i>
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 8 -->
+
+        <article
+            class="service-card"
+            data-service="خدمات رقمية ومكتبية"
+            data-icon="fa-laptop"
+            data-description="مساعدة في تنظيم وإدخال البيانات والمهام المكتبية والرقمية المختلفة."
+        >
+
+            <span class="service-number">
+                08
+            </span>
+
+            <div class="service-icon">
+
+                <i class="fas fa-laptop"></i>
+
+            </div>
+
+            <h3>
+                DIGITAL & OFFICE
+            </h3>
+
+            <span class="service-arabic">
+                خدمات رقمية ومكتبية
+            </span>
+
+            <p>
+                حلول مختلفة لتنظيم البيانات
+                وإنجاز المهام المكتبية.
+            </p>
+
+            <div class="service-bottom">
+
+                <span class="details-link">
+                    التفاصيل
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+
+                <button
+                    class="quick-whatsapp"
+                    onclick="quickWhatsApp(event,'خدمات رقمية ومكتبية')"
+                >
+
+                    <i class="fab fa-whatsapp"></i>
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     HOW IT WORKS
+===================================================== -->
+
+<section
+    class="section steps-section"
+    id="how"
+>
+
+
+    <div class="section-heading reveal">
+
+        <span class="section-tag">
+            ✦ SIMPLE PROCESS
+        </span>
+
+        <h2>
+            الموضوع <span>بسيط جدًا</span> 💗
+        </h2>
+
+        <p>
+            3 خطوات بس وتكون خدمتك بدأت.
+        </p>
+
+    </div>
+
+
+    <div class="steps-grid">
+
+
+        <div class="step reveal">
+
+            <div class="step-icon">
+
+                <i class="fas fa-paper-plane"></i>
+
+            </div>
+
+            <h3>
+                1. ابعت/ي المطلوب
+            </h3>
+
+            <p>
+                ابعت/ي الملفات أو التفاصيل
+                على WhatsApp.
+            </p>
+
+        </div>
+
+
+        <div class="step reveal">
+
+            <div class="step-icon">
+
+                <i class="fas fa-comments"></i>
+
+            </div>
+
+            <h3>
+                2. نتفق على التفاصيل
+            </h3>
+
+            <p>
+                نحدد المطلوب والمدة
+                وكل التفاصيل الخاصة بالخدمة.
+            </p>
+
+        </div>
+
+
+        <div class="step reveal">
+
+            <div class="step-icon">
+
+                <i class="fas fa-circle-check"></i>
+
+            </div>
+
+            <h3>
+                3. تستلم/ي شغلك
+            </h3>
+
+            <p>
+                تستلم/ي الملف بشكل مرتب
+                وجاهز للاستخدام.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CTA
+===================================================== -->
+
+<section class="cta-section reveal">
+
+    <div class="cta-box">
+
+        <h2>
+            مش عارف أنهي خدمة مناسبة ليكي؟ 💭
+        </h2>
+
+        <p>
+            ولا يهمك! ابعت/ي لنا المطلوب حتى لو مش عارف/ة
+            اسمه أو الخدمة المناسبة ليه، وإحنا نساعدك.
+        </p>
+
+        <a
+            href="https://wa.me/201022634494?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D9%85%D8%B4%20%D8%B9%D8%A7%D8%B1%D9%81%D8%A9%20%D8%A3%D9%86%D9%87%D9%8A%20%D8%AE%D8%AF%D9%85%D8%A9%20%D9%85%D9%86%D8%A7%D8%B3%D8%A8%D8%A9%20%D9%84%D9%8A%D8%A7%20%D9%88%D8%B9%D8%A7%D9%8A%D8%B2%D8%A9%20%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%B1"
+            target="_blank"
+            class="btn"
+        >
+
+            <i class="fab fa-whatsapp"></i>
+
+            اسأل دُنيا
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     NOTES
+===================================================== -->
+
+<section
+    class="section notes-section"
+    id="notes"
+>
+
+    <div class="notes-box">
+
+
+        <div class="notes-content reveal">
+
+            <span class="section-tag">
+                ✦ NEW SERVICE
+            </span>
+
+            <h2>
+                مذكرة مرتبة...
+                <br>
+                بدل ما تفضل/ي تايهة في الملفات 📚
+            </h2>
+
+            <p>
+                بنحوّل المحتوى الخام إلى مذكرة منظمة
+                وسهلة للمذاكرة والمراجعة.
+            </p>
+
+
+            <ul class="notes-list">
+
+                <li>
+
+                    <i class="fas fa-check-circle"></i>
+
+                    ترتيب المحتوى وتقسيمه لعناوين.
+
+                </li>
+
+                <li>
+
+                    <i class="fas fa-check-circle"></i>
+
+                    استخراج وتنظيم النقاط المهمة.
+
+                </li>
+
+                <li>
+
+                    <i class="fas fa-check-circle"></i>
+
+                    تنسيق احترافي وجداول عند الحاجة.
+
+                </li>
+
+                <li>
+
+                    <i class="fas fa-check-circle"></i>
+
+                    مراجعة شاملة قبل التسليم.
+
+                </li>
+
+                <li>
+
+                    <i class="fas fa-check-circle"></i>
+
+                    تسليم الملف بصيغة PDF.
+
+                </li>
+
+            </ul>
+
+
+            <a
+                href="https://wa.me/201022634494?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A9%20%D8%A5%D8%B9%D8%AF%D8%A7%D8%AF%20%D8%A7%D9%84%D9%85%D8%B0%D9%83%D8%B1%D8%A7%D8%AA"
+                target="_blank"
+                class="btn btn-primary"
+            >
+
+                <i class="fab fa-whatsapp"></i>
+
+                اطلب/ي المذكرة
+
+            </a>
+
+        </div>
+
+
+
+        <div class="notes-card reveal">
+
+            <div class="notes-card-icon">
+
+                <i class="fas fa-book-open"></i>
+
+            </div>
+
+            <h3>
+                من محتوى خام
+                <br>
+                لمذكرة جاهزة ✨
+            </h3>
+
+            <p>
+                إنت/ي تبعت/ي المحتوى...
+                وإحنا نهتم بالباقي.
+            </p>
+
+            <div>
+
+                <span class="hero-badge">
+
+                    <i class="fas fa-heart"></i>
+
+                    منظمة • واضحة • سهلة
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CONTACT CTA
+===================================================== -->
+
+<section
+    class="section reveal"
+    id="contact"
+>
+
+    <div
+        style="
+        background:white;
+        border-radius:28px;
+        padding:35px 25px;
+        text-align:center;
+        box-shadow:var(--shadow);
+        "
+    >
+
+        <span class="section-tag">
+            ✦ LET'S WORK TOGETHER
+        </span>
+
+        <h2
+            style="
+            color:var(--olive-dark);
+            margin-bottom:10px;
+            "
+        >
+            جاهز نبدأ؟ 💗
+        </h2>
+
+        <p
+            style="
+            color:var(--muted);
+            font-size:.85rem;
+            margin-bottom:20px;
+            "
+        >
+            كلمينا على WhatsApp وابعت/ي المطلوب.
+        </p>
+
+        <a
+            href="https://wa.me/201022634494?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A8%D8%AF%D8%A1%20%D9%81%D9%8A%20%D8%AE%D8%AF%D9%85%D8%A9"
+            target="_blank"
+            class="btn btn-pink"
+        >
+
+            <i class="fab fa-whatsapp"></i>
+
+            01022634494
+
+        </a>
+
+    </div>
+
+</section>
+
+</main>
+
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="serviceModal"
+>
+
+    <div class="modal-box">
+
+
+        <button
+            class="modal-close"
+            id="modalClose"
+            aria-label="إغلاق"
+        >
+
+            <i class="fas fa-xmark"></i>
+
+        </button>
+
+
+        <div
+            class="modal-icon"
+            id="modalIcon"
+        >
+
+            <i class="fas fa-star"></i>
+
+        </div>
+
+
+        <h2 id="modalTitle">
+            الخدمة
+        </h2>
+
+
+        <span
+            class="modal-arabic"
+            id="modalArabic"
+        >
+            الخدمة
+        </span>
+
+
+        <p
+            class="modal-description"
+            id="modalDescription"
+        >
+        </p>
+
+
+        <div class="modal-features">
+
+            <h4>
+                الخدمة تشمل:
+            </h4>
+
+            <ul id="modalFeatures">
+
+                <li>
+                    <i class="fas fa-check"></i>
+                    تنفيذ المطلوب بدقة
+                </li>
+
+                <li>
+                    <i class="fas fa-check"></i>
+                    مراجعة قبل التسليم
+                </li>
+
+                <li>
+                    <i class="fas fa-check"></i>
+                    تنسيق احترافي
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="btn btn-pink"
+                id="modalWhatsApp"
+            >
+
+                <i class="fab fa-whatsapp"></i>
+
+                اطلب الخدمة على WhatsApp
+
+            </button>
+
+
+            <button
+                class="btn btn-primary"
+                id="modalBack"
+            >
+
+                رجوع للخدمات
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     FLOATING WHATSAPP
+===================================================== -->
+
+<a
+    href="https://wa.me/201022634494?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A9"
+    target="_blank"
+    class="whatsapp-float"
+    title="تواصل معنا"
+>
+
+    <i class="fab fa-whatsapp"></i>
+
+</a>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-content">
+
+
+        <div class="footer-brand">
+
+            <h2>
+                Dounia <span>Transcribe</span>
+            </h2>
+
+            <p>
+                Your Tasks... My Support 💗
+                <br><br>
+                خدمات رقمية ومكتبية بجودة عالية،
+                اهتمام بالتفاصيل والتزام بالمواعيد.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                خدماتنا
+            </h3>
+
+            <ul>
+
+                <li>
+                    تفريغ صوتي
+                </li>
+
+                <li>
+                    ترجمة
+                </li>
+
+                <li>
+                    CV & ATS
+                </li>
+
+                <li>
+                    PowerPoint
+                </li>
+
+                <li>
+                    Excel
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                تواصل معنا
+            </h3>
+
+            <div class="footer-contact">
+
+                <a
+                    href="https://wa.me/201022634494"
+                    target="_blank"
+                >
+
+                    <i class="fab fa-whatsapp"></i>
+
+                    01022634494
+
+                </a>
+
+                <a href="#services">
+
+                    <i class="fas fa-layer-group"></i>
+
+                    جميع الخدمات
+
+                </a>
+
+                <a href="#home">
+
+                    <i class="fas fa-house"></i>
+
+                    الصفحة الرئيسية
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 Dounia Transcribe
+        — جميع الحقوق محفوظة 💗
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+    /* =====================================================
+       INTRO
+    ===================================================== */
+
+    const intro = document.getElementById("intro");
+
+    window.addEventListener("load", () => {
+
+        setTimeout(() => {
+
+            intro.classList.add("hide");
+
+        }, 1900);
+
+    });
+
+
+
+    /* =====================================================
+       HEADER SCROLL
+    ===================================================== */
+
+    const header =
+        document.getElementById("header");
+
+    window.addEventListener("scroll", () => {
+
+        if (window.scrollY > 30) {
+
+            header.classList.add("scrolled");
+
+        } else {
+
+            header.classList.remove("scrolled");
+
+        }
+
+    });
+
+
+
+    /* =====================================================
+       MOBILE MENU
+    ===================================================== */
+
+    const menuToggle =
+        document.getElementById("menuToggle");
+
+    const navLinks =
+        document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+
+        navLinks.classList.toggle("active");
+
+        const icon =
+            menuToggle.querySelector("i");
+
+        if (navLinks.classList.contains("active")) {
+
+            icon.classList.remove("fa-bars");
+
+            icon.classList.add("fa-xmark");
+
+        } else {
+
+            icon.classList.remove("fa-xmark");
+
+            icon.classList.add("fa-bars");
+
+        }
+
+    });
+
+
+    /* close menu */
+
+    document
+        .querySelectorAll(".nav-links a")
+        .forEach(link => {
+
+            link.addEventListener("click", () => {
+
+                navLinks.classList.remove("active");
+
+                const icon =
+                    menuToggle.querySelector("i");
+
+                icon.classList.remove("fa-xmark");
+
+                icon.classList.add("fa-bars");
+
+            });
+
+        });
+
+
+
+    /* =====================================================
+       SERVICE MODAL
+    ===================================================== */
+
+    const modal =
+        document.getElementById("serviceModal");
+
+    const modalClose =
+        document.getElementById("modalClose");
+
+    const modalBack =
+        document.getElementById("modalBack");
+
+    const modalIcon =
+        document.getElementById("modalIcon");
+
+    const modalTitle =
+        document.getElementById("modalTitle");
+
+    const modalArabic =
+        document.getElementById("modalArabic");
+
+    const modalDescription =
+        document.getElementById("modalDescription");
+
+    const modalFeatures =
+        document.getElementById("modalFeatures");
+
+    const modalWhatsApp =
+        document.getElementById("modalWhatsApp");
+
+
+    let selectedService = "";
+
+
+    const serviceCards =
+        document.querySelectorAll(".service-card");
+
+
+    serviceCards.forEach(card => {
+
+        card.addEventListener("click", () => {
+
+            const service =
+                card.dataset.service;
+
+            const description =
+                card.dataset.description;
+
+            const icon =
+                card.dataset.icon;
+
+            openServiceModal(
+                service,
+                description,
+                icon
+            );
+
+        });
+
+    });
+
+
+    function openServiceModal(
+        service,
+        description,
+        icon
+    ) {
+
+        selectedService =
+            service;
+
+        modalTitle.textContent =
+            service;
+
+        modalArabic.textContent =
+            service;
+
+        modalDescription.textContent =
+            description;
+
+        modalIcon.innerHTML =
+            `<i class="fas ${icon}"></i>`;
+
+
+        modalFeatures.innerHTML = `
+
+            <li>
+                <i class="fas fa-check-circle"></i>
+                تنفيذ الخدمة حسب المطلوب
+            </li>
+
+            <li>
+                <i class="fas fa-check-circle"></i>
+                تنسيق وتنظيم احترافي
+            </li>
+
+            <li>
+                <i class="fas fa-check-circle"></i>
+                مراجعة قبل التسليم
+            </li>
+
+            <li>
+                <i class="fas fa-check-circle"></i>
+                التواصل والمتابعة على WhatsApp
+            </li>
+
+        `;
+
+
+        modal.classList.add("active");
+
+        document.body.classList.add("modal-open");
+
+    }
+
+
+    function closeModal() {
+
+        modal.classList.remove("active");
+
+        document.body.classList.remove("modal-open");
+
+    }
+
+
+    modalClose.addEventListener(
+        "click",
+        closeModal
+    );
+
+    modalBack.addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    modal.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                event.target === modal
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+
+    /* =====================================================
+       WHATSAPP FROM MODAL
+    ===================================================== */
+
+    modalWhatsApp.addEventListener(
+        "click",
+        () => {
+
+            const message =
+                `السلام عليكم 💗\nأريد الاستفسار عن خدمة: ${selectedService}\nممكن أعرف التفاصيل والسعر والمدة؟`;
+
+            const url =
+                `https://wa.me/201022634494?text=${encodeURIComponent(message)}`;
+
+            window.open(
+                url,
+                "_blank"
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       QUICK WHATSAPP
+    ===================================================== */
+
+    function quickWhatsApp(
+        event,
+        service
+    ) {
+
+        event.stopPropagation();
+
+        const message =
+            `السلام عليكم 💗\nأريد طلب خدمة: ${service}\nممكن أعرف التفاصيل والسعر والمدة؟`;
+
+        const url =
+            `https://wa.me/201022634494?text=${encodeURIComponent(message)}`;
+
+        window.open(
+            url,
+            "_blank"
+        );
+
+    }
+
+
+
+    /* =====================================================
+       SCROLL REVEAL
+    ===================================================== */
+
+    const revealElements =
+        document.querySelectorAll(".reveal");
+
+
+    const revealObserver =
+        new IntersectionObserver(
+            (entries, observer) => {
+
+                entries.forEach(entry => {
+
+                    if (
+                        entry.isIntersecting
+                    ) {
+
+                        entry.target
+                            .classList
+                            .add("visible");
+
+                        observer.unobserve(
+                            entry.target
+                        );
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: .12
+            }
+        );
+
+
+    revealElements.forEach(
+        element => {
+
+            revealObserver.observe(
+                element
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       SERVICE CARD STAGGER ANIMATION
+    ===================================================== */
+
+    const cardObserver =
+        new IntersectionObserver(
+            (entries, observer) => {
+
+                entries.forEach(entry => {
+
+                    if (
+                        entry.isIntersecting
+                    ) {
+
+                        const card =
+                            entry.target;
+
+                        const cards =
+                            [...serviceCards];
+
+                        const index =
+                            cards.indexOf(card);
+
+                        setTimeout(
+                            () => {
+
+                                card.classList.add(
+                                    "show"
+                                );
+
+                            },
+                            index * 80
+                        );
+
+                        observer.unobserve(
+                            card
+                        );
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: .08
+            }
+        );
+
+
+    serviceCards.forEach(
+        card => {
+
+            cardObserver.observe(
+                card
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       SMOOTH SCROLL
+    ===================================================== */
+
+    document
+        .querySelectorAll('a[href^="#"]')
+        .forEach(anchor => {
+
+            anchor.addEventListener(
+                "click",
+                function(event) {
+
+                    const target =
+                        document.querySelector(
+                            this.getAttribute("href")
+                        );
+
+                    if (target) {
+
+                        event.preventDefault();
+
+                        target.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                    }
+
+                }
+            );
+
+        });
+
+</script>
+
+
+</body>
+</html>
